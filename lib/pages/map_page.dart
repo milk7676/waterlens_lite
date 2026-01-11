@@ -19,8 +19,6 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  // 模拟当前位置（深圳市民中心）
-  static const LatLng _currentLocation = LatLng(22.543099, 114.057868);
   final MapController _mapController = MapController();
   LatLng? _currentMouseLatLng;
 
@@ -179,7 +177,7 @@ class _MapPageState extends State<MapPage> {
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(4),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
@@ -327,7 +325,7 @@ class _MapPageState extends State<MapPage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 4.0),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       borderRadius: BorderRadius.circular(4.0),
                       boxShadow: const [
                         BoxShadow(

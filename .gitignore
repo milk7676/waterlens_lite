@@ -43,3 +43,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android keys
+key.properties
+**/*.jks
+**/*.keystore
+
+# Local sensitive / diagnostic artifacts
+keystore_base64.txt
+bugreport*.zip

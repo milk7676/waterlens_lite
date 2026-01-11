@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
+
 import '../database/db.dart';
 import '../utils/data_exporter.dart';
 
@@ -16,6 +19,33 @@ class _PointListPageState extends State<PointListPage> {
   Set<String> _selectedUuids = {};
   bool _isAllSelected = false;
   bool _showRecycleBin = false; // 是否显示回收站
+
+  Future<String?> _pickExportExtension() async {
+    return showDialog<String>(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('选择导出格式'),
+        children: [
+          SimpleDialogOption(
+            onPressed: () => Navigator.of(context).pop('json'),
+            child: const Text('JSON'),
+          ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.of(context).pop('geojson'),
+            child: const Text('GeoJSON'),
+          ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.of(context).pop('xlsx'),
+            child: const Text('Excel (.xlsx)'),
+          ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.of(context).pop('md'),
+            child: const Text('Markdown (.md)'),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _exportSelected(List<PipePoint> allPoints) async {
     final pointsToExport = _selectedUuids.isNotEmpty
@@ -35,7 +65,17 @@ class _PointListPageState extends State<PointListPage> {
       );
     }
 
-    final result = await DataExporter.exportData(pointsToExport);
+    late final ExportResult result;
+    if (Platform.isAndroid || Platform.isIOS) {
+      final ext = await _pickExportExtension();
+      if (ext == null) {
+        result = ExportResult(success: false, message: '取消导出');
+      } else {
+        result = await DataExporter.exportDataWithExtension(pointsToExport, ext);
+      }
+    } else {
+      result = await DataExporter.exportData(pointsToExport);
+    }
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

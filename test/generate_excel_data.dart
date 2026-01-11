@@ -55,8 +55,8 @@ void main() {
     File('test/111.xlsx')
       ..createSync(recursive: true)
       ..writeAsBytesSync(fileBytes);
-    print('成功生成文件: ${Directory.current.path}/test/111.xlsx');
+    stdout.writeln('成功生成文件: ${Directory.current.path}/test/111.xlsx');
   } else {
-    print('生成失败: 文件内容为空');
+    stdout.writeln('生成失败: 文件内容为空');
   }
 }
